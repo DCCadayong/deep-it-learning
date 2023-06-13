@@ -7,7 +7,19 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
+interface Route{
+    id: number,
+    name: string,
+    routeName: string,
+    activeRouteName: string,
+}
+
 const showingNavigationDropdown = ref(false);
+
+const routes = ref<Route[]>([
+    { id: 1, name: "Dashboard", routeName: "dashboard", activeRouteName: "dashboard" },
+    { id: 2, name: "Roles", routeName: "roles.index", activeRouteName: "roles.index" }
+])
 </script>
 
 <template>
@@ -27,10 +39,9 @@ const showingNavigationDropdown = ref(false);
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                            <div v-for="{id, name, routeName, activeRouteName} in routes" :key="id" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink :href="route(routeName)" :active="route().current(activeRouteName)">
+                                    {{ name }}
                                 </NavLink>
                             </div>
                         </div>
@@ -111,9 +122,9 @@ const showingNavigationDropdown = ref(false);
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden"
                 >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                    <div class="pt-2 pb-3 space-y-1" :key="id" v-for="{id, name, routeName, activeRouteName} in routes">
+                        <ResponsiveNavLink :href="route(routeName)" :active="route().current(activeRouteName)">
+                            {{ name }}
                         </ResponsiveNavLink>
                     </div>
 
